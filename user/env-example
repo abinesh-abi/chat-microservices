@@ -1,0 +1,9 @@
+APP_SECRET='secret'
+
+# Mongo DB
+MONGODB_URI='mongodb://nosql-db:27017/shopping-ms-customer'
+
+# Port
+PORT=8001
+
+MESSAGE_BROKER_URL="amqp://rabbitmq"
