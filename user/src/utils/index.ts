@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import amqplib, { Channel } from "amqplib";
 import CONFIG from "../config";
 import { User } from "../types/user";
+import { subscribeEvents } from "../services/userService";
 
 //Utility functions
 export const generateSalt = async () => {
@@ -70,8 +71,8 @@ export const CreateChannel = async () => {
 
 // subscribe message
 export const SubscribeMessage = async (
-  channel: amqplib.Channel,
-  service: any
+  channel: amqplib.Channel
+  // service: any
 ) => {
   const appQueue = await channel.assertQueue(CONFIG.QUEUE_NAME);
   channel.bindQueue(
@@ -83,7 +84,25 @@ export const SubscribeMessage = async (
   channel.consume(appQueue.queue, (data) => {
     console.log("received data");
     console.log(data?.content.toString());
-    service.SubscribeEvents(data?.content.toString());
+    subscribeEvents(data?.content.toString() || "{}");
     if (data) channel.ack(data);
   });
+};
+
+// publish message
+export const PublishMessage = async (
+  channel: amqplib.Channel,
+  binding_key: string,
+  message: string
+) => {
+  try {
+    await channel.publish(
+      CONFIG.EXCHANGE_NAME,
+      binding_key,
+      Buffer.from(message)
+    );
+    console.log("Message has been sent: " + message);
+  } catch (error) {
+    throw error;
+  }
 };

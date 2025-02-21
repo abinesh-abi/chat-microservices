@@ -1,8 +1,12 @@
 import { Request, Response, Router } from "express";
-import { CreateChannel } from "../utils";
+import { CreateChannel, SubscribeMessage } from "../utils";
 import { Channel } from "amqplib";
 import { subscribeEvents } from "../services/userService";
-import { loginUser, signupUser, userDetails } from "../controller/userController";
+import {
+  loginUser,
+  signupUser,
+  userDetails,
+} from "../controller/userController";
 import validateUser from "../middlewares/validateUser";
 
 const router = Router();
@@ -12,6 +16,7 @@ let channel: Channel;
 // Connect to RabbitMQ
 async function connectToRabbitMQ() {
   channel = await CreateChannel();
+  SubscribeMessage(channel);
 }
 connectToRabbitMQ();
 
@@ -26,7 +31,7 @@ router.use("/app-events", (req, res) => {
 
 router.post("/login", loginUser);
 router.post("/signup", signupUser);
-router.get("/user-details",validateUser,userDetails);
+router.get("/user-details", validateUser, userDetails);
 // router.post("/access-token", getAccessToken);
 
 export default router;
