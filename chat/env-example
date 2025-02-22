@@ -1,9 +1,9 @@
 APP_SECRET='secret'
 
 # Mongo DB
-MONGODB_URI='mongodb://nosql-db:27017/chat-ms-user'
+MONGODB_URI='mongodb://nosql-db:27017/chat-ms-chat'
 
 # Port
-PORT=8001
+PORT=8002
 
 MESSAGE_BROKER_URL="amqp://rabbitmq"
