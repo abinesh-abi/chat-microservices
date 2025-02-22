@@ -39,7 +39,23 @@ services:
     volumes:
       - .:/app
       - /app/user/node_modules
+    # env_file:
+    #   - ./user/.env.dev
 
+  chat:
+    build:
+      dockerfile: Dockerfile
+      context: ./chat
+    container_name: chat
+    ports:
+      - "8002:8002"
+    restart: always
+    depends_on:
+      - "nosql-db"
+      - "rabbitmq"
+    volumes:
+      - .:/app
+      - /app/chat/node_modules
     # env_file:
     #   - ./user/.env.dev
  

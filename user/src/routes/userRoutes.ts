@@ -1,7 +1,5 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import { CreateChannel, SubscribeMessage } from "../utils";
-import { Channel } from "amqplib";
-import { subscribeEvents } from "../services/userService";
 import {
   loginUser,
   signupUser,
@@ -11,23 +9,13 @@ import validateUser from "../middlewares/validateUser";
 
 const router = Router();
 
-let channel: Channel;
+export const channel = // Connect to RabbitMQ
+  (async function connectToRabbitMQ() {
+    const channel = await CreateChannel();
+    SubscribeMessage(channel);
+    return channel;
+  })();
 
-// Connect to RabbitMQ
-async function connectToRabbitMQ() {
-  channel = await CreateChannel();
-  SubscribeMessage(channel);
-}
-connectToRabbitMQ();
-
-/* handle events */
-router.use("/app-events", (req, res) => {
-  const { payload } = req.body;
-  subscribeEvents(payload);
-  console.log("----------User Event Triggered-------------");
-  res.status(200).json(payload);
-  return;
-});
 
 router.post("/login", loginUser);
 router.post("/signup", signupUser);

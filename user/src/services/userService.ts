@@ -1,35 +1,9 @@
+import CONFIG from "../config";
 import UserModel from "../database/models/User.model";
+import { channel } from "../routes/userRoutes";
 import { DbUsers, User } from "../types/user";
-
-type SubscribeEventPayload = {
-  event: string;
-  data: Record<string, any>;
-};
-export function subscribeEvents(payloadJson: string) {
-  const payload: SubscribeEventPayload = JSON.parse(payloadJson);
-
-  const { event, data } = payload;
-
-  const { userId, product, order, qty } = data;
-
-  switch (event) {
-    // case 'ADD_TO_WISHLIST':
-    // case 'REMOVE_FROM_WISHLIST':
-    //     this.AddToWishlist(userId,product)
-    //     break;
-    // case 'ADD_TO_CART':
-    //     this.ManageCart(userId,product, qty, false);
-    //     break;
-    // case 'REMOVE_FROM_CART':
-    //     this.ManageCart(userId,product,qty, true);
-    //     break;
-    // case 'CREATE_ORDER':
-    //     this.ManageOrder(userId,order);
-    //     break;
-    default:
-      break;
-  }
-}
+import { PublishMessage } from "../utils";
+import { publishUserCreationInChat } from "./rabitmqService";
 
 export async function createUser(user: {
   email: string;
@@ -37,7 +11,11 @@ export async function createUser(user: {
   username: string;
 }): Promise<DbUsers> {
   try {
-    const res = await UserModel.create(user);
+    const res: DbUsers = await UserModel.create(user);
+    const { _id, username, email } = res;
+
+    // waiting for message queue
+    await publishUserCreationInChat(await channel, { _id, username, email });
 
     return res;
   } catch (error) {
@@ -65,7 +43,7 @@ export async function getUserById(_id: string): Promise<DbUsers> {
 
 export async function getUserByUsername(username: string): Promise<User> {
   try {
-    const res:DbUsers = await UserModel.findOne({ username });
+    const res: DbUsers = await UserModel.findOne({ username });
     return res;
   } catch (error) {
     throw error;

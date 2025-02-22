@@ -12,7 +12,7 @@ const CONFIG = {
   APP_SECRET: process.env.APP_SECRET || "secret",
   MESSAGE_BROKER_URL: process.env.MESSAGE_BROKER_URL || "amqp://localhost",
   EXCHANGE_NAME: "MS_CHAT_APP", //same in all services
-  QUEUE_NAME: "CHAT_APP_QUEUE", 
+  QUEUE_NAME: "USER_QUEUE", 
   CHAT_BINDING_KEY: "CHAT_SERVICE",
   USER_BINDING_KEY: "USER_SERVICE",
 };

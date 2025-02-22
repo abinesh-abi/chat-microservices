@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import amqplib, { Channel } from "amqplib";
 import CONFIG from "../config";
 import { User } from "../types/user";
-import { subscribeEvents } from "../services/userService";
+import { subscribeEvents } from "../services/rabitmqService";
 
 //Utility functions
 export const generateSalt = async () => {

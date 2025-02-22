@@ -1,6 +1,6 @@
 FROM node
 
-WORKDIR /app/user
+WORKDIR /app/chat
 
 COPY package.json .
 
@@ -8,6 +8,6 @@ RUN npm i
 
 COPY . .
 
-EXPOSE 8001
+EXPOSE 8002
 
 CMD ["npm","start"]

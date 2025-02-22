@@ -3,7 +3,6 @@ import { DbUsers } from "../../types/user";
 
 const Schema = mongoose.Schema;
 
-
 const UserSchema = new Schema<DbUsers>(
   {
     username: {
@@ -25,7 +24,15 @@ const UserSchema = new Schema<DbUsers>(
       type: String,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toObject: {
+      transform: (doc, ret) => {
+        delete ret.password; // Remove the password field
+        return ret;
+      },
+    },
+  }
 );
 
 export default mongoose.model("user", UserSchema);

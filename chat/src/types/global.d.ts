@@ -18,3 +18,10 @@ type CrateChatBody = {
   user1: string;
   user2: string;
 };
+
+export type User = {
+  _id: string;
+  username: string;
+  email: string;
+  image?: string;
+};
