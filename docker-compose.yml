@@ -8,12 +8,22 @@ services:
     volumes:
       - ./db/:/data/db
 
+  # rabbitmq:
+  #   image: rabbitmq:alpine
+  #   container_name: rabbitmq
+  #   ports:
+  #     - '5672:5672'
+  #     # - '8080:15672'
+
   rabbitmq:
-    image: rabbitmq:alpine
+    image: rabbitmq:3-management  # rabirmq web management
     container_name: rabbitmq
     ports:
       - '5672:5672'
-      - '8080:15672'
+      - '8080:15672'   # Management UI port
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
 
   user:
     build:
