@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { validateAccessToken } from "../utils";
-import { getUserById } from "../services/chatService";
 import { CustomRequest } from "../types/global";
 
 const validateUser = async (

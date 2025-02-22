@@ -30,7 +30,7 @@ export const generateRefreshToken = (payload: Record<string, any>) => {
 export const validateAccessToken = (token: string) => {
   try {
     const tokenObj = jwt.verify(token, CONFIG.APP_SECRET);
-    return tokenObj as { _id: string; name: string; email: string };
+    return tokenObj as { _id: string; username: string; email: string };
   } catch (error) {
     return false;
   }

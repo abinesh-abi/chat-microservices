@@ -9,8 +9,7 @@ const ChatSchema = new Schema<DbChat>(
       type: String,
       maxlength: [200, "Name cannot be more than 200 characters"],
     },
-    // users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    users: [{ type: String }],
+    users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { CreateChannel, SubscribeMessage } from "../utils";
 import { Channel } from "amqplib";
 import { createChat, getChatsByUser } from "../controller/chatController";
+import validateUser from "../middlewares/validateUser";
 
 const router = Router();
 
@@ -13,6 +14,6 @@ export const channel = // Connect to RabbitMQ
 })();
 
 router.post("/create", createChat);
-router.get("/list/:id", getChatsByUser);
+router.get("/list",validateUser, getChatsByUser);
 
 export default router;
