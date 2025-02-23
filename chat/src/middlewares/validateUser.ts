@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { validateAccessToken } from "../utils";
 import { CustomRequest } from "../types/global";
 
@@ -28,10 +28,19 @@ const validateUser = async (
     res.status(401).json({ message: "Please Provide Valied Token" });
     return;
   }
-//   const user = await getUserById(validated._id);
+  //   const user = await getUserById(validated._id);
 
   //passing user to next middle ware
   req.user = validated;
+
+  // pagination
+  const { page, size, search = "" } = req.query;
+  const limit = Number(size || 10);
+  const skip = (Number(page || 1) - 1) * limit;
+  const pipeline = [{ $match: search }, { $skip: skip }, { $limit: limit }];
+
+  req.pagination = { limit, skip, search, pipeline };
+
   next();
 };
 

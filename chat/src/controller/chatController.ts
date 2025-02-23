@@ -1,10 +1,14 @@
 import { NextFunction, Request, response, Response } from "express";
 import { Yup } from "../utils/Yup";
-import { Chat, CrateChatBody, CustomRequest, DbChat } from "../types/global";
+import {
+  Chat,
+  CrateChatBody,
+  CustomRequest,
+  DbChat,
+  PaginationOutput,
+  PaginationQuery,
+} from "../types/global";
 import chatService from "../services/chatService";
-import { PublishMessage, SubscribeMessage } from "../utils";
-import { channel } from "../routes/chatRoutes";
-import CONFIG from "../config";
 
 const chatCreateSchema = Yup.object().shape({
   user1: Yup.string().required(),
@@ -38,9 +42,11 @@ export const getChatsByUser = async (
   next: NextFunction
 ) => {
   try {
-    const _id = req.user?._id as string
+    const _id = req.user?._id as string;
 
-    const chat: Chat[] = await chatService.getChatsByUser(_id);
+    const filter = req.pagination as PaginationOutput;
+
+    const chat: Chat[] = await chatService.getChatsByUser(_id, filter);
 
     res.json(chat);
   } catch (error) {

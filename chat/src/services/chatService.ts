@@ -1,5 +1,5 @@
 import ChatModel from "../database/models/Chat.model";
-import { DbChat } from "../types/global";
+import { CustomObj, DbChat, PaginationOutput } from "../types/global";
 import mongoose from "mongoose";
 
 export default {
@@ -11,11 +11,16 @@ export default {
       throw error;
     }
   },
-  async getChatsByUser(_id: string): Promise<DbChat[]> {
+  async getChatsByUser(
+    _id: string,
+    filter: PaginationOutput
+  ): Promise<DbChat[]> {
     const userObjId = new mongoose.Types.ObjectId(_id);
     try {
       let chats = await ChatModel.aggregate([
         { $match: { users: userObjId } },
+        { $skip: filter.limit },
+        { $limit: filter.limit },
         {
           $lookup: {
             from: "users",

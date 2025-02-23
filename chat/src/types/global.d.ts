@@ -1,7 +1,30 @@
-import { Request } from "express";
+import { request, Request } from "express";
 
-export interface CustomRequest extends Request {
+export type PaginationQuery = {
+  page?: string;
+  search?: string;
+  size?: string;
+};
+
+export type PaginationOutput = {
+  skip: number;
+  limit: number;
+  search: string;
+  pipeline:CustomObj[]
+};
+
+type CustomObj = Record<string, any>;
+
+export interface CustomRequest<
+  Params = CustomObj,
+  Query = CustomObj,
+  Body = CustomObj
+> extends Request {
+  body: Body & Request["body"];
+  params: Params & Request["params"];
+  query: Query & Request["query"] & PaginationQuery;
   user?: User;
+  pagination?: PaginationOutput;
 }
 
 export type Chat = {
