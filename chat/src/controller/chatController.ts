@@ -7,8 +7,10 @@ import {
   DbChat,
   PaginationOutput,
   PaginationQuery,
+  User,
 } from "../types/global";
 import chatService from "../services/chatService";
+import userService from "../services/userService";
 
 const chatCreateSchema = Yup.object().shape({
   user1: Yup.string().required(),
@@ -49,6 +51,25 @@ export const getChatsByUser = async (
     const chat: Chat[] = await chatService.getChatsByUser(_id, filter);
 
     res.json(chat);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const getUsersListNoChat = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const _id = req.user?._id as string;
+
+    const filter = req.pagination as PaginationOutput;
+
+    const { data, count } = await userService.usersNotInChat(_id, filter);
+
+    res.json({ ...filter.original, data, count });
   } catch (error) {
     console.log(error);
     next(error);

@@ -34,12 +34,18 @@ const validateUser = async (
   req.user = validated;
 
   // pagination
-  const { page, size, search = "" } = req.query;
-  const limit = Number(size || 10);
-  const skip = (Number(page || 1) - 1) * limit;
+  const { page = 1, size = 10, search = "" } = req.query;
+  const limit = Number(size);
+  const skip = (Number(page) - 1) * limit;
   const pipeline = [{ $match: search }, { $skip: skip }, { $limit: limit }];
 
-  req.pagination = { limit, skip, search, pipeline };
+  req.pagination = {
+    limit,
+    skip,
+    search,
+    pipeline,
+    original: { page: Number(page), size: Number(size), search },
+  };
 
   next();
 };

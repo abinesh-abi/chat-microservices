@@ -1,4 +1,5 @@
 import ChatModel from "../database/models/Chat.model";
+import UserModel from "../database/models/User.model";
 import { CustomObj, DbChat, PaginationOutput } from "../types/global";
 import mongoose from "mongoose";
 
@@ -19,7 +20,7 @@ export default {
     try {
       let chats = await ChatModel.aggregate([
         { $match: { users: userObjId } },
-        { $skip: filter.limit },
+        { $skip: filter.skip },
         { $limit: filter.limit },
         {
           $lookup: {

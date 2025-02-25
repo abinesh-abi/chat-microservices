@@ -1,16 +1,17 @@
 import { request, Request } from "express";
 
 export type PaginationQuery = {
-  page?: string;
+  page?: string | number;
   search?: string;
-  size?: string;
+  size?: string | number;
 };
 
 export type PaginationOutput = {
   skip: number;
   limit: number;
   search: string;
-  pipeline:CustomObj[]
+  pipeline: CustomObj[];
+  original: PaginationQuery;
 };
 
 type CustomObj = Record<string, any>;

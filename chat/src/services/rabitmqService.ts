@@ -1,5 +1,5 @@
 import { User } from "../types/global";
-import { createUser } from "./userService";
+import userService from "./userService";
 
 type SubscribeEventPayload = {
   event: string;
@@ -14,7 +14,7 @@ export async function subscribeEvents(payloadJson: string) {
     switch (event) {
       case "CREATE_USER": //crate user
         const { _id, email, username } = data as User;
-        createUser({ _id, email, username });
+        userService.createUser({ _id, email, username });
         break;
       // case 'ADD_TO_WISHLIST':
       // case 'REMOVE_FROM_WISHLIST':
