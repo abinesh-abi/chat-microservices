@@ -42,8 +42,8 @@ export default {
             count: [{ $count: "total" }],
           },
         },
-        { $skip: filter.skip },
-        { $limit: filter.limit },
+        // { $skip: filter.skip },
+        // { $limit: filter.limit },
       ]);
       const count = chats[0].count[0].total | 1;
       const data = chats[0].data || [];

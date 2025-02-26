@@ -57,7 +57,24 @@ services:
       - .:/app
       - /app/chat/node_modules
     # env_file:
-    #   - ./user/.env.dev
+    #   - ./chat/.env.dev
+
+  message:
+    build:
+      dockerfile: Dockerfile
+      context: ./message
+    container_name: message
+    ports:
+      - "8003:8003"
+    restart: always
+    depends_on:
+      - "nosql-db"
+      - "rabbitmq"
+    volumes:
+      - .:/app
+      - /app/message/node_modules
+    # env_file:
+    #   - ./message/.env.dev
  
   nginx-proxy:
     build:
