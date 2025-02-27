@@ -48,11 +48,10 @@ export const getChatsByUser = async (
 
     const filter = req.pagination as PaginationOutput;
 
-    const chat: Chat[] = await chatService.getChatsByUser(_id, filter);
+    const { data, count } = await chatService.getChatsByUser(_id, filter);
 
-    res.json(chat);
+    res.json({ ...filter.original, data, count });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

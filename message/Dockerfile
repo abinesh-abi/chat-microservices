@@ -1,6 +1,6 @@
 FROM node
 
-WORKDIR /app/chat
+WORKDIR /app/message
 
 COPY package.json .
 
