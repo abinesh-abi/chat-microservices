@@ -75,6 +75,22 @@ services:
       - /app/message/node_modules
     # env_file:
     #   - ./message/.env.dev
+
+  web-socket:
+    build:
+      dockerfile: Dockerfile
+      context: ./webSocket
+    container_name: webSocket
+    ports:
+      - "9000:9000"
+    restart: always
+    # depends_on:
+    #   - "message"
+    volumes:
+      - .:/app
+      - /app/webSocket/node_modules
+    # env_file:
+    #   - ./message/.env.dev
  
   nginx-proxy:
     build:
